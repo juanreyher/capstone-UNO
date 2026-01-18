@@ -1,10 +1,10 @@
 import express from "express";
-import { config } from "./const/globalConst.js";
+import { globalConst } from "./const/globalConst.js";
 import gameRoutes from "./routes/gameRoutes.js";
 
 const app = express();
 
-const PORT = config.PORT;
+const PORT = globalConst.PORT;
 
 app.use(express.json());
 
