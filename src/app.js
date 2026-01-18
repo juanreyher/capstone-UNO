@@ -1,5 +1,5 @@
 import express from "express";
-import { config } from "./config/config.js";
+import { config } from "./const/globalConst.js";
 import gameRoutes from "./routes/gameRoutes.js";
 
 const app = express();
