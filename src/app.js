@@ -1,10 +1,10 @@
 import express from "express";
-import { config } from "../config/config.js";
-import gameRoutes from "../routes/gameRoutes.js";
+import { config } from "./config/config.js";
+import gameRoutes from "./routes/gameRoutes.js";
 
 const app = express();
 
-const PORT = config.port;
+const PORT = config.PORT;
 
 app.use(express.json());
 
