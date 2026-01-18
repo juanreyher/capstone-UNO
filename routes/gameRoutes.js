@@ -1,9 +1,10 @@
 import { Router } from "express";
+import { createGame } from "../controllers/gameControllers.js";
 
 const router = Router();
 
 router.post("/game/", (req, res) => {
-    res.send("Game created");
+    createGame(req, res);
 });
 
 router.get("/game/:id", (req, res) => {
