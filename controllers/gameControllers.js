@@ -38,3 +38,15 @@ export const updateGame = (req, res) => {
         res.status(404).send({ message: "Game not found" });
     }
 }
+
+export const deleteGame = (req, res) => {
+    const gameId = parseInt(req.params.id);
+    let gameIndex = games.findIndex(g => g.id === gameId);
+
+    if (gameIndex !== -1) {
+        games.splice(gameIndex, 1);
+        res.status(200).send({ message: "Game deleted successfully" });
+    } else {
+        res.status(404).send({ message: "Game not found" });
+    }
+}

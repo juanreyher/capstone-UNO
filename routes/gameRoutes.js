@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createGame, getGameById, updateGame } from "../controllers/gameControllers.js";
+import { createGame, getGameById, updateGame, deleteGame } from "../controllers/gameControllers.js";
 
 const router = Router();
 
@@ -16,8 +16,7 @@ router.put("/game/:id", (req, res) => {
 });
 
 router.delete("/game/:id", (req, res) => {
-    const gameId = req.params.id;
-    res.send(`Game with ID: ${gameId} deleted`);
+    deleteGame(req, res);
 });
 
 router.patch("/game/:id", (req, res) => {
