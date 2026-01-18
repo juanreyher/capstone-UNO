@@ -50,3 +50,16 @@ export const deleteGame = (req, res) => {
         res.status(404).send({ message: "Game not found" });
     }
 }
+
+export const partiallyUpdateGame = (req, res) => {
+    const gameId = parseInt(req.params.id);
+    const gameUpdates = req.body;
+    let gameIndex = games.findIndex(g => g.id === gameId);
+
+    if (gameIndex !== -1) {
+        games[gameIndex] = { ...games[gameIndex], ...gameUpdates };
+        res.status(200).send(games[gameIndex]);
+    } else {
+        res.status(404).send({ message: "Game not found" });
+    }
+}
