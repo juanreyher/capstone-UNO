@@ -25,3 +25,16 @@ export const getGameById = (req, res) => {
         res.status(404).send({ message: "Game not found" });
     }
 }
+
+export const updateGame = (req, res) => {
+    const gameId = parseInt(req.params.id);
+    const updatedGame = req.body;
+    let gameIndex = games.findIndex(g => g.id === gameId);
+
+    if (gameIndex !== -1) {
+        games[gameIndex] = { id: gameId, ...updatedGame };
+        res.status(200).send(games[gameIndex]);
+    } else {
+        res.status(404).send({ message: "Game not found" });
+    }
+}
