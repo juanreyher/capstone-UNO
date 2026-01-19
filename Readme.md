@@ -22,6 +22,7 @@ src/
 seeders/                # Data seeders (if any)
 .env.example            # Example environment config
 package.json            # Project metadata and scripts
+documents/              # API documentation (Postman collection)
 ```
 
 ## Configuration
@@ -96,6 +97,53 @@ Content-Type: application/json
   "platform": "NES"
 }
 ```
+
+## API Documentation (Postman)
+
+A Postman collection is available for testing the API endpoints. Import the following file into Postman:
+
+- `documents/capstone-game.postman_collection.json`
+
+### Example Requests in Postman
+
+- **Create Game** (POST):
+  - URL: `http://localhost:3080/api/game`
+  - Body (raw JSON):
+    ```json
+    {
+      "name": "GOW",
+      "description": "An open-world adventure game.",
+      "genre": "Action-adventure",
+      "platform": "Play Station"
+    }
+    ```
+
+- **Get Game by ID** (GET):
+  - URL: `http://localhost:3080/api/game/6`
+
+- **Update Game** (PUT):
+  - URL: `http://localhost:3080/api/game/2`
+  - Body (raw JSON):
+    ```json
+    {
+      "name": "GOW",
+      "description": "Update description",
+      "genre": "Action-adventure",
+      "platform": "Play Station"
+    }
+    ```
+
+- **Delete Game** (DELETE):
+  - URL: `http://localhost:3080/api/game/6`
+
+- **Partially Update Game** (PATCH):
+  - URL: `http://localhost:3080/api/game/5`
+  - Body (raw JSON):
+    ```json
+    {
+      "name": "Name partially updated"
+    }
+    ```
 
 ## Development Notes
 - Uses ES Modules (`type: module` in package.json)
