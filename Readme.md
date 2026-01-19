@@ -102,5 +102,4 @@ Content-Type: application/json
 - Error handling via middleware
 - Sequelize models and migrations for DB structure
 
-## License
-ISC
+
