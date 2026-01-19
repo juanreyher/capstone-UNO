@@ -1,65 +1,79 @@
-const games = [
-    {
-        id: 1,
-        name: "The Legend of Zelda: Breath of the Wild",
-        description: "An open-world adventure game set in the kingdom of Hyrule.",
-        genre: "Action-adventure",
-        platform: "Nintendo Switch"
-    }
-];
+import models from '../database/models/index.cjs';
 
-export const createGame = (req, res) => {
-    const newGame = req.body;
-    newGame.id = games.length + 1;
-    games.push(newGame);
-    res.status(201).send(newGame);
-}
+console.log(Object.keys(models));
 
-export const getGameById = (req, res) => {
-    const gameId = parseInt(req.params.id);
-    const game = games.find(g => g.id === gameId);
+export const createGame = async (req, res, next) => {
+    try {
+        if(!req.body.name || req.body.name.trim() === "" || req.body.name === undefined || req.body.genre === undefined || req.body.genre.trim() === "" ) {
+            return res.status(400).send({ message: "Bad Request: Name and Genre are required" });
+        }
 
-    if (game) {
-        res.status(200).send(game);
-    } else {
-        res.status(404).send({ message: "Game not found" });
+        const newGame = await models.Game.create(req.body);
+        res.status(201).send(newGame);
+    } catch (error) {
+        next(error);
     }
 }
 
-export const updateGame = (req, res) => {
-    const gameId = parseInt(req.params.id);
-    const updatedGame = req.body;
-    let gameIndex = games.findIndex(g => g.id === gameId);
+export const getGameById = async (req, res, next) => {
+    try {
+        const gameId = parseInt(req.params.id);
+        const game = await models.Game.findByPk(gameId);
+        if (game) {
+            res.status(200).send(game);
+        } else {
+            res.status(404).send({ message: "Game not found" });
+        }
+    } catch (error) {
+        next(error);
+    }
 
-    if (gameIndex !== -1) {
-        games[gameIndex] = { id: gameId, ...updatedGame };
-        res.status(200).send(games[gameIndex]);
-    } else {
-        res.status(404).send({ message: "Game not found" });
+}
+
+export const updateGame = async (req, res, next) => {
+    try {
+        const gameId = parseInt(req.params.id);
+        const [updated] = await models.Game.update(req.body, {
+            where: { id: gameId }
+        });
+        if (updated) {
+            const updatedGame = await models.Game.findByPk(gameId);
+            res.status(200).send(updatedGame);
+        } else {
+            res.status(404).send({ message: "Game not found" });
+        }
+    } catch (error) {
+        next(error);
     }
 }
 
-export const deleteGame = (req, res) => {
+export const deleteGame = async (req, res, next) => {
     const gameId = parseInt(req.params.id);
-    let gameIndex = games.findIndex(g => g.id === gameId);
-
-    if (gameIndex !== -1) {
-        games.splice(gameIndex, 1);
-        res.status(200).send({ message: "Game deleted successfully" });
-    } else {
-        res.status(404).send({ message: "Game not found" });
+    try {
+        const game = await models.Game.findByPk(gameId);
+        if (game) {
+            await game.destroy();
+            res.status(200).send({ message: "Game deleted successfully" });
+        } else {
+            res.status(404).send({ message: "Game not found" });
+        }
+    } catch (error) {
+        next(error);
     }
+
 }
 
-export const partiallyUpdateGame = (req, res) => {
-    const gameId = parseInt(req.params.id);
-    const gameUpdates = req.body;
-    let gameIndex = games.findIndex(g => g.id === gameId);
-
-    if (gameIndex !== -1) {
-        games[gameIndex] = { ...games[gameIndex], ...gameUpdates };
-        res.status(200).send(games[gameIndex]);
-    } else {
-        res.status(404).send({ message: "Game not found" });
+export const partiallyUpdateGame = async (req, res, next) => {
+    try {
+        const gameId = parseInt(req.params.id);
+        const game = await models.Game.findByPk(gameId);
+        if (game) {
+            await game.update(req.body);
+            res.status(200).send(game);
+        } else {
+            res.status(404).send({ message: "Game not found" });
+        }
+    } catch (error) {
+        next(error);
     }
 }
